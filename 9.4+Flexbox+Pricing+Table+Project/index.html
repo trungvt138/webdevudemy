@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>Flexbox Pricing Table</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,8 +14,59 @@
         font-family: "Sono", sans-serif;
       }
 
+      .pricing-plan {
+        background-color: #F3F2F3;
+        flex: 1;
+        max-width: 400px;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .plan-button {
+        background-color: #FD6728;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+      }
+
+      .pricing-container {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .plan-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .plan-price {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .plan-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .plan-features li {
+        margin-bottom: 20px;
+      }
+
       /* Hint: What can you do with a media query and flexbox? */
       @media (max-width: 1250px) {
+        .pricing-container {
+          flex-direction: column;
+          height: 100%;
+        }
       }
     </style>
   </head>
