@@ -18,9 +18,11 @@ $(".btn").on("click", function() {
     if (gameStarted) {
         var userChosenColor = $(this).attr("id");
         animateButtonPressed(userChosenColor);
-        playSound(userChosenColor);
+
         if (!checkAnswer(userChosenColor)) {
             startOver();
+        } else {
+            playSound(userChosenColor);
         }
     }
 })
