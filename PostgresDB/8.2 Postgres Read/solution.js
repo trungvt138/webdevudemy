@@ -2,9 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 
-const app = express();
-const port = 3000;
-
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
@@ -13,18 +10,22 @@ const db = new pg.Client({
   port: 5432,
 });
 
-let quiz = [];
-let totalCorrect = 0;
+const app = express();
+const port = 3000;
+
 db.connect();
 
-db.query("SELECT * FROM capitals", (err, result) => {
+let quiz = [];
+db.query("SELECT * FROM flags", (err, res) => {
   if (err) {
-    console.log("Error executing query", err.stack);
+    console.error("Error executing query", err.stack);
   } else {
-    quiz = result.rows;
+    quiz = res.rows;
   }
   db.end();
-})
+});
+
+let totalCorrect = 0;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,8 +45,7 @@ app.get("/", async (req, res) => {
 app.post("/submit", (req, res) => {
   let answer = req.body.answer.trim();
   let isCorrect = false;
-  let correctAnswer = currentQuestion.capital;
-  if (correctAnswer.toLowerCase() === answer.toLowerCase()) {
+  if (currentQuestion.name.toLowerCase() === answer.toLowerCase()) {
     totalCorrect++;
     console.log(totalCorrect);
     isCorrect = true;
@@ -56,7 +56,6 @@ app.post("/submit", (req, res) => {
     question: currentQuestion,
     wasCorrect: isCorrect,
     totalScore: totalCorrect,
-    correctAnswer: correctAnswer,
   });
 });
 
