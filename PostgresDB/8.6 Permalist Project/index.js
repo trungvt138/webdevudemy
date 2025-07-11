@@ -33,7 +33,9 @@ app.get("/", async (req, res) => {
 app.post("/add", async (req, res) => {
   const item = req.body.newItem;
   try {
-    await db.query("INSERT INTO items (title) VALUES ($1)", [item]);
+    await db.query("INSERT INTO items (title) " +
+        "VALUES ($1)", [item]
+    );
     res.redirect("/");
   } catch (error) {
     console.log(error);
@@ -43,16 +45,33 @@ app.post("/add", async (req, res) => {
 app.post("/edit", async (req, res) => {
   const itemToUpdate = req.body["updatedItemTitle"];
   const idOfItem = req.body["updatedItemId"];
-
-  await db.query(
-      "UPDATE items " +
-      "SET title = $1 " +
-      "WHERE id = $2", [itemToUpdate, idOfItem]);
   //console.log(itemToUpdate);
-  res.redirect("/");
+  try {
+    await db.query(
+        "UPDATE items " +
+        "SET title = $1 " +
+        "WHERE id = $2", [itemToUpdate, idOfItem]
+    );
+
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-app.post("/delete", (req, res) => {});
+app.post("/delete", async (req, res) => {
+  const itemToDelete = req.body["deleteItemId"];
+  //console.log(itemToDelete);
+  try {
+    await db.query(
+        "DELETE FROM items " +
+        "WHERE id = $1", [itemToDelete]
+    );
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
